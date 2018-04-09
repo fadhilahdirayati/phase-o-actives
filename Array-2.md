@@ -1,6 +1,6 @@
 # ARRAY
 
-# Contoh Soal - Array Mastery: Circular Operation
+**Contoh Soal - Array Mastery: Circular Operation**
 
 [INSTRUKSI]
 Akan dijalankan sebuah operasi matematika dengan urutan kali (+) dan kurang (-).
@@ -62,7 +62,7 @@ console.log(circularOperation([0, 10, 2, 5, 7])); // -6
 console.log(circularOperation([])); // 0
 ```
 
-# Contoh Soal 2 - Array Mastery: Group Odd Evens
+**Contoh Soal 2 - Array Mastery: Group Odd Evens**
 
 [INSTRUKSI]
 Function groupOddEven akan menerima satu parameter berupa array yang berisi number.
