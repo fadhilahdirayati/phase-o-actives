@@ -1,6 +1,6 @@
-# CONTOH SOAL ARRAY
+###JavaScript Data Types - Array
 
-#SOAL 1 - Array Mastery: Love Me Not
+**Contoh Soal 1 - Array Mastery: Love Me No**
 
 [INSTRUKSI]
 Seorang perempuan sedang menggalaui apakah seseorang menyukai dia atau tidak. Ketimbang mencabut kelopak bunga untuk menghitung jika dia suka atau tidak, perempuan tersebut membuat sebuah program.
@@ -49,7 +49,7 @@ console.log(loveMeNot([])); // "GALAU"
 console.log(loveMeNot([false])); // "HE DOES NOT LOVE ME :("
 ```
 
-#Soal 2 - Array Mastery: Pair Up
+**Contoh Soal 2 - Array Mastery: Pair Up**
 
 [INSTRUKSI]
 Setiap student di HACKTIV8 ditugaskan untuk membuat tim project dengan komposisi tim dua orang.
