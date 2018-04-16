@@ -55,7 +55,7 @@ console.log(aInTheMiddle(['baon', 'test', 'taqs'])); // []
 console.log(aInTheMiddle(['graail', 'nAn', 'naAn'])); // ['graail', 'nAn', 'naAn']
 console.log(aInTheMiddle(['asafw', 'wow', 'o', 'graail', 'nAn'])); // ['asafw', graail', 'nAn']
 console.log(aInTheMiddle([])); // []
-...
+```
 
 **Contoh Soal 2 - Two Dimentional Array Generator
 
@@ -213,5 +213,4 @@ console.log(
   )
 );
 console.log(credentialValidator('erwin', 'testing', 'erwin@nice.com'));
-...
-
+```
