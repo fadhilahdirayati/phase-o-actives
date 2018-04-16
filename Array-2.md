@@ -1,138 +1,140 @@
 # ARRAY
 
-**Contoh Soal - Array Mastery: Circular Operation**
+**Contoh Soal - The Alphabetical Express**
 
 [INSTRUKSI]
-Akan dijalankan sebuah operasi matematika dengan urutan kali (+) dan kurang (-).
+ormTrainSeating adalah sebuah function yang menerima satu parameter berupa string.
+Ini adalah sebuah simulasi penempatan penumpang di dalam gerbong kereta.
 
-Function circularOperation akan menerima satu parameter berupa array angka, dan memproses satu per satu angka tersebut.
-Proses yang dilakukan adalah mengoperasikan setiap bilangan didalamnya, menggunakan simbol +, dan - berturut-turut.
-Simbol akan berotasi kembali ke + jika operasi - sudah dilakukan, sampai semua angka selesai di proses.
+Gerbong terdiri dari 5, yaitu gerbong A, gerbong B, C, D, dan E.
 
-Gambaran Proses:
-0 + angka pertama - angka kedua + angka ketiga - angka keempat + angka kelima - angka keenam + ... (dan seterusnya)
+Function akan membentuk kereta dalam bentuk multidimension array.
+Kereta direpresentasikan sebagai sebuah array yang berisi gerbong.
+Gerbong adalah sebuah array yang berisi huruf tiap penumpang.
 
+Setiap gerbong hanya boleh menampung penumpang dengan nama yang sesuai dengan nama gerbong.
+Setiap penumpang direpresentasikan dengan satu huruf, antara A, B, C, D, atau E.
 
-Function akan mereturn hasil kalkulasi dari operasi tersebut.
-Jika tidak ada angka yang diberikan, function akan me-return 0.
+Bentuk Kereta:
 
-Aturan: proses operasi satu per satu, dan TIDAK ADA aturan matematika yang harus memproses * sebelum + / !
+[ GERBONG A, GERBONG B, GERBONG C, GERBONG D, GERBONG E ]
+
+Bentuk Gerbong:
+
+Contoh bentuk gerbong A
+[ 'A', 'A' ]
+
+Contoh bentuk gerbong B
+[ 'B', 'B' ]
+
+Kumpulan penumpang direpresentasikan dalam string.
 
 
 ```Output
-input: [1, 2, 3, 4, 5]
-proses: 0 + 1 - 2 + 3 - 4 + 5
-output: 3
+nput: 'ABCA'
 
-input: [5, 4, 3, 2, 1, 2]
-proses: 0 + 5 - 4 + 3 - 2 + 1 - 2
-output: 1
+maka, ada penumpang A, B, C, dan A.
 
-input: [1, 1, 1, 1]
-proses: 0 + 1 - 1 + 1 - 1
-output: 0
+Kita masukkan setiap penumpang ke masing-masing gerbong.
 
-input: []
+output: [ ['A', 'A'], ['B'], ['C'], [], []]
+
+gerbong A berisi dua A,
+gerbong B berisi satu B,
+gerbong C berisi satu C,
+gerbong D kosong,
+dan gerbong E kosong.
+
+Function akan me-return array kereta yang telah dibentuk.
+
+[CONSTRAINTS]
+Dilarang menggunakan sintaks .split()!
+
 ```
-Simpan variabel number bentuk array tipe data angka
-Return hasil operasi + dan - secara bergantian dari variabel tersebut
-
 
 ```Javascript
-function circularOperation(numbers) {
-  // Code here
-  var hasil = 0;
-  
-  for (var i = 0; i < numbers.length; i++) {
-    if(i%2 === 0) {
-      hasil += numbers[i];
-    }
-    else{
-      hasil -= numbers[i];  
+function formTrainSeating(passengers) {
+  // only write code here
+  var kereta = [];
+  var gerbongA = [];
+  var gerbongB = [];
+  var gerbongC = [];
+  var gerbongD = [];
+  var gerbongE = [];
+  for (let i = 0; i < passengers.length; i++) {
+    if (passengers[i] === 'A'){
+    gerbongA.push(passengers[i]);
+    }else if (passengers[i] === 'B'){ 
+    gerbongB.push(passengers[i]);
+    } else if (passengers[i] === 'C'){ 
+    gerbongC.push(passengers[i]);
+    } else if (passengers[i] === 'D'){
+    gerbongD.push(passengers[i]);
+    }else if (passengers[i] === 'E'){
+    gerbongE.push(passengers[i]);
     }
   }
-  return hasil;
+  kereta.push(gerbongA);
+  kereta.push(gerbongB);
+  kereta.push(gerbongC);
+  kereta.push(gerbongD);
+  kereta.push(gerbongE);
+  return kereta;
 }
-  
-// TEST CASES
-console.log(circularOperation([1, 2, 3, 4, 5])); // 3
-console.log(circularOperation([5, 4, 3, 2, 1, 2])); // 1
-console.log(circularOperation([1, 1, 1, 1])); // 0
-console.log(circularOperation([0, 10, 2, 5, 7])); // -6
-console.log(circularOperation([])); // 0
+
+// misal kalau sampai gerbongnya sampe Z
+console.log(formTrainSeating('ABDCCCE')); // [['A'], ['B'], ['C', 'C', 'C'], ['D'], ['E']]
+console.log(formTrainSeating('ABC')); // [['A'], ['B'], ['C'], [], []]
+console.log(formTrainSeating('E')); // [[], [], [], [], ['E']]
+console.log(formTrainSeating('EAB')); // [['A'], ['B'], [], [], ['E']]
+console.log(formTrainSeating('BBABB')); // [['A'], ['B', 'B', 'B', 'B'], [], [], []]
+
 ```
 
-**Contoh Soal 2 - Array Mastery: Group Odd Evens**
+**Contoh Soal 2 - Break Sentence**
 
 [INSTRUKSI]
-Function groupOddEven akan menerima satu parameter berupa array yang berisi number.
-Function akan mengelompokkan setiap number yang ganjil (odd) dan setiap number yang genap (even),
-dan akan mereturn sebuah string dengan format berikut:
+breakSentence adalah sebuah function yang menerima satu parameter berupa string kalimat.
+function akan mereturn sebuah array yang berisikan setiap kata di kalimat tesebut.
 
-"ODDS: <OddNum1>,<OddNum2>,<OddNum3> EVENS: <EvenNum1>,<EvenNum2>,<EvenNum3>"
 
-aturan:
-  - Apabila tidak ada angka ganjil, hanya tampilkan:
-  "EVENS: <EvenNum1>, <EvenNum2>"
-  - Apabila tidak ada angka genap, hanya tampilkan:
-  "ODDS: <OddNum1>, <OddNum2>"
-  - Apabila tidak ada angka sama sekali, tampilkan string kosong!
-  - Angka tidak perlu diurutkan!
-  
+[CONSTRAINTS]
+Hanya boleh menggunakan sintaks for/while, if-else, serta operasi array untuk pemecahan masalah.
+Dilarang menggunakan sintaks .split()! Jangan lupa, split bukanlah operasi array.
+
+[EXAMPLE]
+breakSentence('I am so amazed')
+
 ```Output
-input: [1, 5, 8, 2, 3]
-output: "ODDS: 1, 5, 3 EVENS: 8, 2"
-
-input: [1, 1, 1]
-output: "ODDS: 1, 1, 1"
-
-input: [2, 8, 10]
-output: "EVENS: 2, 8, 10"
+output: ['i', 'am', 'so', 'amazed']
 ```
-Simpan variabel students dalam bentuk array tipe data angka
-Return angka ganjil masuk ke ODDS dan angka genap masuk ke EVENS
+
 
 
 ```Javascript
-function groupOddEven(students) {
-  // Code here
-  var odds = [];
-  var evens = [];
-  var hasil1 = '';
-  var hasil2 = '';
-  
-  if(students.length === 0) {
-    return '""';
-  }
-  else {
-    for(var i = 0; i < students.length; i ++) {
-      if(students[i]%2 === 0) {
-        evens.push(students[i]);
-        hasil1 = 'EVENS : ' + evens +'"';
-      } 
-      else if(evens.length === 0) {
-        hasil1 = '"';
-      }
-      else{
-        hasil1 = ' EVENS : ' + evens +'"';
-      }
-      if(students[i]%2 !== 0) {
-        odds.push(students[i]);
-        hasil2 = '"ODDS : ' + odds;
-      }
-      else if(odds.length === 0){
-        hasil2 = '"';
-      }
+function breakSentence(sentence){
+  var katas = []
+  var kataSementara = '';
+  for (var i =0; i<sentence.length ; i+=1){
+    if (sentence[i] === ' '){
+      katas.push(kataSementara);
+      kataSementara = ''
+    }else {
+      kataSementara += sentence[i];
     }
-    return hasil2 + hasil1;
   }
-}
+  if (katas.length === 0){
+    return katas 
+  }
+  katas.push(kataSementara)
+  return katas
   
-// TEST CASES
-console.log(groupOddEven([1, 5, 8, 2, 3])); // "ODDS: 1, 5, 3 EVENS: 8, 2"
-console.log(groupOddEven([1, 1, 1])); // "ODDS: 1, 1, 1"
-console.log(groupOddEven([2, 8, 10])); // "EVENS: 2, 8, 10"
-console.log(groupOddEven([2, 111])); // "ODDS: 111 EVENS: 2"
-console.log(groupOddEven([])); // ""
+}
+
+console.log(breakSentence('I am so amazed')); // ['I', 'am', 'so', 'amazed' ]
+console.log(breakSentence('do something')); // ['do', 'something']
+console.log(breakSentence('')); // []
+console.log(breakSentence('week4 is so easy')); // ['week4', 'is', 'so', 'easy']
+console.log(breakSentence('I can do this with my eyes closed')); // ['I', 'can', 'do', 'this', with', 'my', 'eyes', 'closed']
 ```
 
