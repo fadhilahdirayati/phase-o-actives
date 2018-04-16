@@ -1,4 +1,4 @@
-###JavaScript Data Types - Array
+#JavaScript Data Types - Array
 
 **Contoh Soal 1 - A in the Middle
 
