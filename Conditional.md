@@ -3,7 +3,7 @@
 Kondisional adalah sebuah metode dimana kode akan mengecek apakah sebuah premis benar atau tidak.
 Jika kondisi sesuai, maka kode dalam kondisional akan dijalankan.
 
-## Contoh Conditional 1** Menjalankan proses apabila statement kondisi `true`.
+### Contoh Conditional 1** Menjalankan proses apabila statement kondisi `true`.
 
 ```javascript
 if(true) {
@@ -11,7 +11,7 @@ if(true) {
 }
 ```
 
-## Contoh Conditional 2** Tidak menjalankan proses di dalam block/scope conditional apabila statement kondisi `false`.
+### Contoh Conditional 2** Tidak menjalankan proses di dalam block/scope conditional apabila statement kondisi `false`.
 
 ```javascript
 if(false) {
@@ -19,7 +19,7 @@ if(false) {
 }
 ```
 
-## Contoh Conditional 3** Conditional dengan statement yang akan menghasilkan nilai `true` atau `false`
+### Contoh Conditional 3** Conditional dengan statement yang akan menghasilkan nilai `true` atau `false`
 
 ```javascript
 var tampung = 5;
@@ -39,7 +39,7 @@ Seorang anak diminta oleh ibunya untuk membeli telur di supermarket dan langsung
 
 pada JavaScript dan berbagai bahasa pemrograman, "jika tidak terdapat telur", atau bisa dibilang kondisi yang terjadi diluar "ekspektasi", terdapat `else` yang akan menjalankan proses lain jika `if` bernilai `false`. Contoh lebih jelas bisa dilihat dari contoh dibawah ini:
 
-## Contoh Conditional 4** Branching Sederhana (If-else)
+### Contoh Conditional 4** Branching Sederhana (If-else)
 
 ```javascript
 var tampung = 5;
@@ -53,7 +53,7 @@ else {
 
 Tidak hanya sampai situ, kondisional bisa juga bersifat bertumpuk, atau biasanya disebut juga sebagai nested-if.
 
-##  Contoh Conditional 5** Branching Bertumpuk Sederhana (If-else)
+###  Contoh Conditional 5** Branching Bertumpuk Sederhana (If-else)
 
 ```javascript
 var tampung = 5;
@@ -72,7 +72,7 @@ else {
 
 Contoh di atas juga bisa dibuat dalam bentuk lain, yaitu `else if`. `else-if` adalah sebuah kondisional, dimana statement `else if` akan dijalankan apabila `if` tidak memenuhi kondisi / `false`, dan dijalankan sebelum statement `else`.
 
-## Contoh Conditional 5** Branching Bertumpuk Sederhana (If-else)
+### Contoh Conditional 5** Branching Bertumpuk Sederhana (If-else)
 
 ```javascript
 var tampung = 5;
