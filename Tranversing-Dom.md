@@ -1,219 +1,444 @@
-# DOM Creation
+# Transversing in Document Object Model (DOM)
 
 ## Objectives
 
-Dalam aplikasi web, kita tidak terbatas memanfaatkan DOM untuk dimanipulasi atau ditambahkan event-event tertentu. Kita juga dapat membuat DOM baru menggunakan JavaScript. Bahkan, kita dapat membuat sebuah halaman web yang full dengan element HTML namun script HTML kita sangt sedikit, dan hampir seluruhnya di render menggunakan JavaScript. Prinsip inilah yang dilakukan oleh Angular, React, dan teknologi front-end lainnya untuk merender DOM.
+Di layout HTML yang cukup kompleks, kita akan bertemu dengan banyak element HTML yang memiliki hubungan parent-child yang dalam, dan pada saat kita menggunakan JavaScript untuk menseleksi atau memanipulasinya, tidak mungkin kita harus memberikan id atau class ke semua element-nya. Kita bisa menseleksi element HTML dari parent atau dari childnya. Untuk lebih dalam memahami hal ini, kamu harus telah mengerti hierarki parent-child yang terjadi di susunan HTML. Tapi tenang saja, kita akan mengulas ulang hal tersebut.
 
-**DOM**
+**DOM Transversing**
 
-- ▢ Memahami DOM Creation
-- ▢ Menyusun Layout Web dengan JavaScript
+- ▢ mereview Hierarki Parent-Child di HTML
+- ▢ menjelajah DOM dengan hubungan Parent, Child, dan Sibling
 
 ## Learnings
 
-### 1. Mengenal DOM Creation
+### 1. Hierarki Layout HTML
 
-Kita dapat membuat atau menyusun DOM menggunakan JavaScript, dan membangun DOM tree kita sendiri. DOM tree bisa dibilang sebagai hubungan parent-child antar satu element dengan element lainnya.
+Hierarki layout HTML adalah bagaimana sebuah element HTML saling terkait satu sama lain. Untuk beberapa element, dapat terkandung di dalam element HTML lain. Hal inilah yang disebut sebagai element parent-child. Element HTML yang terkandung di dalam element HTML lain, adalah child/anak dari element induk nya tersebut.
 
-Contoh Sederhana HTML
+![Hierarki dalam Layout HTML](assets/html-hierarcy.gif)
+
+Contoh gambar di atas merupakan gambaran sederhana dari sebuah layout HTML. Apabila layout di atas kita coba konversikan ke dalam kode HTMl, akan seperti kode di bawah ini (untuk kebutuhan kode, ditambahkan id untuk beberapa div):
+
+**js-dom-transversing.html**
 ```html
 <html>
-  <head>
-    <title>Super Simple Web Page</title>
-  </head>
+  <head></head>
   <body>
-    <div id="main">
-      <div id="inside-main">
-        <h1>Heading Sample 1</h1>
-        <button>Click Me!</button>
-      </div>
+    <h1></h1>
+    <div id="contoh-div-1">
+      <p id="contoh-p-1">
+        <strong></strong>
+        <em></em>
+      </p>
     </div>
+    <div id="contoh-div-2">
+      <h2></h2>
+      <p id="contoh-p-2"></p>
+      <ul>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <script src="dom-transverse-1-intro.js"></script>
+    <script src="dom-transverse-2-siblings.js"></script>
+    <script src="dom-transverse-3-chaining-selectors.js"></script>
   </body>
 </html>
 ```
 
-Kita akan mencoba membuat halaman isi dari body tersebut dengan dinamis menggunakan JavaScript. Kita akan memulai dengan membuat HTML "kosong" terlebih dahulu.
+Bisa kita lihat seperti visualisasi layout web page dan code di atas, satu element HTML menjadi child untuk yang lainnya. Terkait relasi parent-child, ada juga relasi yang dinamakan sibling. Sibling adalah "saudara" dari sebuah child, yang memiliki parent yang sama. Jika kita analogikan dalam sebuah keluarga sebagai seorang anak atau sebuah child, sibling adalah adik atau kakak kandung kita, dan parent adalah orang tua kandung kita. Di bawah ini di jelaskan peran masing-masing element HTML di atas dalam susunan hierarki nya.
 
-**js-dom-creation.html**
-```html
-<html>
-  <head>
-    <title>Super Simple Web Page - Fresh From the JS</title>
-  </head>
-  <body>
-    <!-- it's empty, just contain a js file -->
-    <script src="js-dom-creation-script.js"></script>
-  </body>
-</html>
-```
+- **`<html>`**                  : merupakan parent paling atas
+- **`<head>`**                  : merupakan child dari `<html>`
+- **`<body>`**                  : merupakan child dari `<html>`, sibling dari `<head>`
+- **`<h1>`**                    : merupakan child dari `<body>`
+- **`<div id="contoh-div-1">`** : merupakan child dari `<body>`, sibling dari `<h1>`
+- **`<p id="contoh-p-1"> `**    : merupakan child dari `<div id="contoh-div-1">`
+- **`<strong>`**                : merupakan child dari `<p id="contoh-p-1">`
+- **`<em>`**                    : merupakan child dari `<p id="contoh-p-1">`, sibling dari `<strong>`
+- **`<div id="contoh-div-2">`** : merupakan child dari `<body>`, sibling dari `<h1>` dan `<div id="contoh-div-1">`
+- **`<h2>`**                    : merupakan child dari `<div id="contoh-div-2">`
+- **`<p id="contoh-p-2">`**     : merupakan child dari `<div id="contoh-div-2">`, sibling dari `<h2>`
+- **`<ul>`**                    : merupakan child dari `<div id="contoh-div-2">`, sibling dari `<h2>` dan `<p id="contoh-p-2">`
+- **`<li>`**                    : merupakan child dari `<ul>`
 
-Selanjutnya, kita akan membuat element HTML di dalam `<body>` satu per satu dengan beberapa sintaks.
+### 2. Menjelajah DOM
 
-**js-dom-creation-script.js (Part 1)**
+Saatnya kita belajar menjelajah DOM memanfaatkan parent, child, dan sibling.
+
+#### 2.1 Parent - Child
+
+Untuk mulai mengenai transerving atau penjelajahan di dalam DOM, kita coba mulai dengan menjelajahi hubungan Parent - Child. Contoh pertama kita mulai dengan menseleksi `<body>` dan mendapatkan element HTML apa saja yang menjadi children dari `<body>`.
+
+**dom-transverse-1-intro.js (part 1)**
 ```javascript
-// Pertama, kita seleksi terlebih dahulu <body>
+/*
+====================================================
+ Menseleksi DOM berdasarkan hubungan Parent - Child
+====================================================
+*/
+
+// Menseleksi element <body>
 var body = document.body;
 
-// Kemudian, kita buat sebuah element HTML <div> menggunakan createElement
-var mainDiv = document.createElement('div');
+// Mendapatkan element children dari <body>
+var bodyChilds = body.children;
 
-// Untuk membuat <div id="main">, maka kita harus membuat HTML attribute id
-var mainDivAttrId = document.createAttribute('id');
-
-// Untuk memberikan nilai kepada id, maka kita gunakan .value
-mainDivAttrId.value = "main";
-
-// id="main" kita sudah siap. Sekarang kita harus menambahkan attribute tersebut ke mainDiv
-mainDiv.setAttributeNode(mainDivAttrId);
-
-// mainDiv kita sudah menjadi <div id="main">. Saatnya kita tambahkan ke dalam <body>
-// Karena Kita akan meletakkan <div id="main"> di dalam <body>, maka kita gunakan appendChild
-body.appendChild(mainDiv);
+// Menampilkan DOM yang menjadi child dari <body> dalam bentuk array
+console.log(bodyChilds); // h1, div id="contoh-div-1", div id="contoh-div-2", scripts js
 ```
 
-Kita berhasil membuat `<div id="main">` di dalam `<body>`! Selanjutnya, kita akan mencoba membuat `<div>` di dalamnya.
+Berdasarkan potongan kode di atas, kita berhasil mendapatkan children dari `<body>`, yaitu `<h1>`, `<div id="contoh-div-1">`, `<div id="contoh-div-2">` dan `<script>`.
 
-**js-dom-creation-script.js (Part 2)**
+Sekarang coba kita update lagi kode kita untuk mendapatkan contoh penjelajahan lain.
+
+**dom-transverse-1-intro.js (part 2)**
 ```javascript
-// Pertama, kita seleksi terlebih dahulu <body>
+/*
+====================================================
+ Menseleksi DOM berdasarkan hubungan Parent - Child
+====================================================
+*/
+
+// Menseleksi element <body>
 var body = document.body;
 
-// Kemudian, kita buat sebuah element HTML <div> menggunakan createElement
-var mainDiv = document.createElement('div');
+// Mendapatkan element children dari <body>
+var bodyChilds = body.children;
 
-// Untuk membuat <div id="main">, maka kita harus membuat HTML attribute id
-var mainDivAttrId = document.createAttribute('id');
+// Menampilkan DOM yang menjadi child dari <body> dalam bentuk array
+console.log(bodyChilds);
 
-// Untuk memberikan nilai kepada id, maka kita gunakan .value
-mainDivAttrId.value = "main";
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
 
-// id="main" kita sudah siap. Sekarang kita harus menambahkan attribute tersebut ke mainDiv
-mainDiv.setAttributeNode(mainDivAttrId);
+// Mendapatkan element children dari <div id="contoh-div-1"> dalam bentuk array
+var contohDiv1Childs = contohDiv1.children;
 
-// mainDiv kita sudah menjadi <div id="main">. Saatnya kita tambahkan ke dalam <body>
-// Karena Kita akan meletakkan <div id="main"> di dalam <body>, maka kita gunakan appendChild
-body.appendChild(mainDiv);
+// Mendapatkan child pertama dari <div id="contoh-div-1">
+var contohDiv1FirstChild = contohDiv1Childs[0];
+console.log(contohDiv1FirstChild); // <p id="contoh-p-1">...</p>
 
-// Selanjutnya, kita akan mengulangi hal yang serupa untuk menambahkan <div id="inside-main">
-var insideMainDiv = document.createElement('div');
-
-// Selain menggunakan .value kemudian setAttributeNode, kita bisa menggunakan shorthand berikut
-insideMainDiv.setAttribute('id', 'inside-main');
-
-// <div id="inside-main"> kita sudah siap, saatnya di append sebagai child ke <div id="main">
-mainDiv.appendChild(insideMainDiv);
+// Note: Walaupun children mungkin hanya 1 element, tetap tertampung dalam array!
 ```
 
-Kita telah selesai membuat div di dalam div lain. Kita berhasil membuat secara dinamis element HTML dengan hubungan parent-child! Selanjutnya, kita akan membuat `<h1>` di dalam `<div id="inside-main">` yang baru saja kita buat.
+Disini kita mencoba mengakses salah satu children dan menambilkannya ke console sebagai HTML element, dengan menakses index dari array children yang sesuai. Ingat, setiap kita menggunakan `.children`, kita pasti mendapatkan nilai berupa array yang berisikan berbagai HTML elements.
 
-**js-dom-creation-script.js (Part 3)**
+Bagaimana mengakses semua nilai dari children? Kita tinggal menggunakan looping seperti contoh berikut:
+
+**dom-transverse-1-intro.js (part 3)**
 ```javascript
-// Pertama, kita seleksi terlebih dahulu <body>
+/*
+====================================================
+ Menseleksi DOM berdasarkan hubungan Parent - Child
+====================================================
+*/
+
+// Menseleksi element <body>
 var body = document.body;
 
-// Kemudian, kita buat sebuah element HTML <div> menggunakan createElement
-var mainDiv = document.createElement('div');
+// Mendapatkan element children dari <body>
+var bodyChilds = body.children;
 
-// Untuk membuat <div id="main">, maka kita harus membuat HTML attribute id
-var mainDivAttrId = document.createAttribute('id');
+// Menampilkan DOM yang menjadi child dari <body> dalam bentuk array
+console.log(bodyChilds);
 
-// Untuk memberikan nilai kepada id, maka kita gunakan .value
-mainDivAttrId.value = "main";
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
 
-// id="main" kita sudah siap. Sekarang kita harus menambahkan attribute tersebut ke mainDiv
-mainDiv.setAttributeNode(mainDivAttrId);
+// Mendapatkan element children dari <div id="contoh-div-1"> dalam bentuk array
+var contohDiv1Childs = contohDiv1.children;
 
-// mainDiv kita sudah menjadi <div id="main">. Saatnya kita tambahkan ke dalam <body>
-// Karena Kita akan meletakkan <div id="main"> di dalam <body>, maka kita gunakan appendChild
-body.appendChild(mainDiv);
+// Mendapatkan child pertama dari <div id="contoh-div-1">
+var contohDiv1FirstChild = contohDiv1Childs[0];
+console.log(contohDiv1FirstChild); // <p id="contoh-p-1">...</p>
 
-// Selanjutnya, kita akan mengulangi hal yang serupa untuk menambahkan <div id="inside-main">
-var insideMainDiv = document.createElement('div');
+// Note: Walaupun children mungkin hanya 1 element, tetap tertampung dalam array!
 
-// Selain menggunakan .value kemudian setAttributeNode, kita bisa menggunakan shorthand berikut
-insideMainDiv.setAttribute('id', 'inside-main');
+// Menseleksi element <div id="contoh-div-2">
+var contohDiv2 = document.getElementById('contoh-div-2');
 
-// <div id="inside-main"> kita sudah siap, saatnya di append sebagai child ke <div id="main">
-mainDiv.appendChild(insideMainDiv);
+// Mendapatkan element children dari <div id="contoh-div-2"> dalam bentuk array
+var contohDiv2Childs = contohDiv2.children;
 
-// Selanjutnya, kita akan mencoba membuat sebuah <h1> dengan isi teks didalamnya.
-var h1 = document.createElement('h1');
-
-// Untuk membuat isi teks di dalam h1, kita bisa menggunakan createTextNode
-var h1Text = document.createTextNode('Heading Sample 1');
-
-// Kita append text ke dalam <h1>
-h1.appendChild(h1Text);
-
-// Kemudian, kita append h1 sebagai child dari <div id="inside-main">
-insideMainDiv.appendChild(h1);
+for(var n = 0; n < contohDiv2Childs.length; n++) {
+  var contohDiv2NthChild = contohDiv2Childs[n];
+  console.log(contohDiv2NthChild);
+}
 ```
 
-`<h1>` selesai dibuat! yang terakhir, kita akan membuat `<button>` dengan cara yang serupa, dan juga menambahkan event ke dalam button tersebut agar user dapat mengklik button tersebut!
+Kamu berhasil mendapatkan seluruh children dari `<div id="contoh-div-2">` dengan looping!
 
-**js-dom-creation-script.js (Part 4)**
+Dari awal kita mencoba mengakses children dari parent nya. Bagaimana dengan mengakses parent melalui child nya? tentu bisa!
+
+**dom-transverse-1-intro.js (part 4)**
 ```javascript
-// Pertama, kita seleksi terlebih dahulu <body>
+/*
+====================================================
+ Menseleksi DOM berdasarkan hubungan Parent - Child
+====================================================
+*/
+
+// Menseleksi element <body>
 var body = document.body;
 
-// Kemudian, kita buat sebuah element HTML <div> menggunakan createElement
-var mainDiv = document.createElement('div');
+// Mendapatkan element children dari <body>
+var bodyChilds = body.children;
 
-// Untuk membuat <div id="main">, maka kita harus membuat HTML attribute id
-var mainDivAttrId = document.createAttribute('id');
+// Menampilkan DOM yang menjadi child dari <body> dalam bentuk array
+console.log(bodyChilds);
 
-// Untuk memberikan nilai kepada id, maka kita gunakan .value
-mainDivAttrId.value = "main";
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
 
-// id="main" kita sudah siap. Sekarang kita harus menambahkan attribute tersebut ke mainDiv
-mainDiv.setAttributeNode(mainDivAttrId);
+// Mendapatkan element children dari <div id="contoh-div-1"> dalam bentuk array
+var contohDiv1Childs = contohDiv1.children;
 
-// mainDiv kita sudah menjadi <div id="main">. Saatnya kita tambahkan ke dalam <body>
-// Karena Kita akan meletakkan <div id="main"> di dalam <body>, maka kita gunakan appendChild
-body.appendChild(mainDiv);
+// Mendapatkan child pertama dari <div id="contoh-div-1">
+var contohDiv1FirstChild = contohDiv1Childs[0];
+console.log(contohDiv1FirstChild); // <p id="contoh-p-1">...</p>
 
-// Selanjutnya, kita akan mengulangi hal yang serupa untuk menambahkan <div id="inside-main">
-var insideMainDiv = document.createElement('div');
+// Note: Walaupun children mungkin hanya 1 element, tetap tertampung dalam array!
 
-// Selain menggunakan .value kemudian setAttributeNode, kita bisa menggunakan shorthand berikut
-insideMainDiv.setAttribute('id', 'inside-main');
+// Menseleksi element <div id="contoh-div-2">
+var contohDiv2 = document.getElementById('contoh-div-2');
 
-// <div id="inside-main"> kita sudah siap, saatnya di append sebagai child ke <div id="main">
-mainDiv.appendChild(insideMainDiv);
+// Mendapatkan element children dari <div id="contoh-div-2"> dalam bentuk array
+var contohDiv2Childs = contohDiv2.children;
 
-// Selanjutnya, kita akan mencoba membuat sebuah <h1> dengan isi teks didalamnya.
-var h1 = document.createElement('h1');
+for(var n = 0; n < contohDiv2Childs.length; n++) {
+  var contohDiv2NthChild = contohDiv2Childs[n];
+  console.log(contohDiv2NthChild);
+}
 
-// Untuk membuat isi teks di dalam h1, kita bisa menggunakan createTextNode
-var h1Text = document.createTextNode('Heading Sample 1');
+// Menseleksi element <p id="contoh-p-1">
+var contohP1 = document.getElementById('contoh-p-1');
+console.log(contohP1);
 
-// Kita append text ke dalam <h1>
-h1.appendChild(h1Text);
-
-// Kemudian, kita append h1 sebagai child dari <div id="inside-main">
-insideMainDiv.appendChild(h1);
-
-// Selanjutnya, kita akan mencoba membuat sebuah <button> dengan isi teks. Langkahnya sama dengan sebelumnya.
-var button = document.createElement('button');
-
-var buttonText = document.createTextNode('Click Me!');
-
-button.appendChild(buttonText);
-
-// Lalu, kita akan mencoba membuat button tersebut saat di klik meng-alert sebuah pesan
-button.addEventListener('click', function() {
-  alert('Hello!');
-});
-
-// Terakhir, kita mengappend button tersebut ke dalam insdieMainDiv
-insideMainDiv.appendChild(button);
+var contohP1Parent = contohP1.parentNode;
+console.log(contohP1Parent); // <div id="contoh-div-1">
 ```
 
-Selamat, kamu telah berhasil membuat webpage yang dibentuk dinamis menggunakan JavaScript!
+Selamat! Kamu telah berhasil mengkases parent -> child dan sebaliknya, child -> parent. Kamu mulai dapat memahami cara kerja penjelajahan DOM! Saatnya kita lanjut ke relasi selanjutnya, yaitu siblings!
 
-Tambahan: Untuk menghapus element, kita bisa menggunakan removeChild!
+#### 2.2 Siblings
 
+Apabila sebelumnya kita mempelajari hubungan DOM sebagai parent dan child, sekarang kita akan membahas tentang hubungan antar sibling. Sibling, layaknya saudara kandung dalam analogi keluarga, merupakan DOM yang merupakan child dari parent yang sama.
+
+Tetap menggunakan halaman HTML yang sama dengan script js yang berbeda, kita coba buat beberapa kode yang menunjukkan hubungan antar sibling.
+
+**dom-transverse-2-siblings.js (part 1)**
 ```javascript
-// Dari awal kita mencoba menambahkan element baru. Bagaimana dengan menghapusnya?
-insideMainDiv.removeChild(h1);
+/*
+=============================================
+ Menseleksi DOM berdasarkan hubungan Sibling
+=============================================
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
+
+// Mendapatkan sibling setelah <div id="contoh-div-1">
+var contohDiv1NextSibling = contohDiv1.nextElementSibling;
+
+console.log(contohDiv1NextSibling); // <div id="contoh-div-2">...</div>
 ```
+
+dengan menggunakan `.nextElementSibling`, kita bisa mendapatkan sibling yang berada setelah DOM yang kita seleksi. Selanjutnya, kita akan mencoba mendapatkan sibling yang berada sebelum DOM yang kita seleksi.
+
+**dom-transverse-2-siblings.js (part 2)**
+```javascript
+/*
+=============================================
+ Menseleksi DOM berdasarkan hubungan Sibling
+=============================================
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
+
+// Mendapatkan sibling setelah <div id="contoh-div-1">
+var contohDiv1NextSibling = contohDiv1.nextElementSibling;
+
+console.log(contohDiv1NextSibling); // <div id="contoh-div-2">...</div>
+
+// Mendapatkan sibling sebelum <div id="contoh-div-1">
+var contohDiv1PrevSibling = contohDiv1.previousElementSibling;
+
+console.log(contohDiv1PrevSibling); // <h1></h1>
+```
+
+Itu saja yang penting mengenai siblings. Ingat, jika kamu mencoba mengakses sibling yang tidak ada, akan menghasilkan nilai `null`!
+
+### 2.3 Menjelajah DOM lebih dalam
+
+Sebelumnya, untuk mengakses child, parent, atau sibling kita masih mengakses element yang satu tingkat didalam, diluar, atau disebelahnya. Bagaimana jika kita ingin menjelajah element dengan tingkat yang lebih dalam? Kamu bisa menggunakan cara biasa, dengan mengakses element satu tingkat satu per satu, atau menelusurinya lebih dalam sekaligus, dengan selector beruntun atau disebut juga chaining selectors.
+
+**dom-transverse-3-chaining-selectors.js (Part 1)**
+```javascript
+/*
+============================
+ Menseleksi DOM Lebih Dalam
+============================
+*/
+
+/*
+1. Parent -> Child -> Child cara biasa
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
+console.log(contohDiv1);
+
+// Mendapatkan <p id="contoh-p-1"> di dalam <div id="contoh-div-1">
+var contohP1 = contohDiv1.children[0];
+console.log(contohP1);
+
+// Mendapatkan <strong> di dalam <p id="contoh-p-1">
+var strongElem = contohP1.children[0];
+console.log(strongElem);
+```
+
+Cara ini tentu paling mudah dibaca, namun seringkali kita membutuhkan cara yang lebih cepat dan praktis, yaitu menggunakan chaining selectors!
+
+**dom-transverse-3-chaining-selectors.js (Part 2)**
+```javascript
+/*
+============================
+ Menseleksi DOM Lebih Dalam
+============================
+*/
+
+/*
+1. Parent -> Child -> Child cara biasa
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
+console.log(contohDiv1);
+
+// Mendapatkan <p id="contoh-p-1"> di dalam <div id="contoh-div-1">
+var contohP1 = contohDiv1.children[0];
+console.log(contohP1);
+
+// Mendapatkan <strong> di dalam <p id="contoh-p-1">
+var strongElem = contohP1.children[0];
+console.log(strongElem);
+
+/*
+2. Parent -> Child -> Child dengan Chaining Selector
+*/
+
+// Menggunakan chaining selector atau selektor beruntun.
+console.log(contohDiv1.children[0].children[0]);
+```
+
+Lebih praktis dan mudah kan? Sekarang bagaimana dengan relasi siblings?
+
+**dom-transverse-3-chaining-selectors.js (Part 3)**
+```javascript
+/*
+============================
+ Menseleksi DOM Lebih Dalam
+============================
+*/
+
+/*
+1. Parent -> Child -> Child cara biasa
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
+console.log(contohDiv1);
+
+// Mendapatkan <p id="contoh-p-1"> di dalam <div id="contoh-div-1">
+var contohP1 = contohDiv1.children[0];
+console.log(contohP1);
+
+// Mendapatkan <strong> di dalam <p id="contoh-p-1">
+var strongElem = contohP1.children[0];
+console.log(strongElem);
+
+/*
+2. Parent -> Child -> Child dengan Chaining Selector
+*/
+
+// Menggunakan chaining selector atau selektor beruntun.
+console.log(contohDiv1.children[0].children[0]);
+
+/*
+3. Element -> previous sibling -> previous sibling cara biasa
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+contohDiv1 = document.getElementById('contoh-div-1');
+console.log(contohDiv1);
+
+// Mendapatkan <h1></h1> yang berada sebelum <div id="contoh-div-1">
+var h1Elem = contohDiv1.previousElementSibling;
+console.log(h1Elem); // <h1></h1>
+
+// Mendapatkan null, dengan mengakses previous sibling dari <h1></h1>
+var justNull = h1Elem.previousElementSibling;
+console.log(justNull); // null
+```
+
+Lalu, lanjut dengan cara method selectors untuk siblings!
+
+**dom-transverse-3-chaining-selectors.js (Part 4)**
+```javascript
+/*
+============================
+ Menseleksi DOM Lebih Dalam
+============================
+*/
+
+/*
+1. Parent -> Child -> Child cara biasa
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+var contohDiv1 = document.getElementById('contoh-div-1');
+console.log(contohDiv1);
+
+// Mendapatkan <p id="contoh-p-1"> di dalam <div id="contoh-div-1">
+var contohP1 = contohDiv1.children[0];
+console.log(contohP1);
+
+// Mendapatkan <strong> di dalam <p id="contoh-p-1">
+var strongElem = contohP1.children[0];
+console.log(strongElem);
+
+/*
+2. Parent -> Child -> Child dengan Chaining Selector
+*/
+
+// Menggunakan chaining selector atau selektor beruntun.
+console.log(contohDiv1.children[0].children[0]);
+
+/*
+3. Element -> previous sibling -> previous sibling cara biasa
+*/
+
+// Menseleksi element <div id="contoh-div-1">
+contohDiv1 = document.getElementById('contoh-div-1');
+console.log(contohDiv1);
+
+// Mendapatkan <h1></h1> yang berada sebelum <div id="contoh-div-1">
+var h1Elem = contohDiv1.previousElementSibling;
+console.log(h1Elem); // <h1></h1>
+
+// Mendapatkan null, dengan mengakses previous sibling dari <h1></h1>
+var justNull = h1Elem.previousElementSibling;
+console.log(justNull); // null
+
+
+/*
+4. Element -> previous sibling -> previous sibling dengan chaining selector
+*/
+
+// Penggunaan chaining selector
+console.log(contohDiv1.previousElementSibling.previousElementSibling); // null
+```
+
+Selamat, kamu telah mampu menjelajah DOM! Kamu bisa memanfaatkan ilmu ini untuk membuat aplikasi web yang sangat interaktif! :tada:
