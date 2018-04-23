@@ -1,4 +1,4 @@
-#Data Type
+# Data Type
 
 Data Type, atau dalam bahasa Indonesia kita sebut sebagai Tipe Data, adalah sekumpulan data dengan nilai yang memiliki karakteristik berbeda. Beberapa contoh dari tipe data adalah:
 
@@ -6,7 +6,7 @@ Data Type, atau dalam bahasa Indonesia kita sebut sebagai Tipe Data, adalah seku
 - String: tipe data dengan nilai berupa kumpulan atau set dari beberapa karakter
 - Boolean: tipe data dengan nilai berupa `true` atau `false`.
 
-#Variable
+# Variable
 
 Variable, atau dalam bahasa Indonesia kita sebut variabel, bisa memegang atau berisi hampir semua tipe data yang tersedia. Variabel memungkinkan kita untuk memuat atau menyimpan nilai data ke dalam sesuatu. Biasanya bersifat sementara saat program dijalankan.
 
