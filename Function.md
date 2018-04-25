@@ -114,6 +114,7 @@ output:
   //2.a Buat perulangan dari indeks pertama adalah second indeks kurang dari firstnum dengan pertambahan sesuai dengan jumper 
   //2.b Tampilkan perulangan ke J
 
+`````Javascript
 function numberJumper(firstNum, secondNum, jumper) {
   if (firstNum <= secondNum) {
     for (var i = firstNum; i <= secondNum; i = i + jumper) {
@@ -153,6 +154,7 @@ numberJumper(1, 3, 2);
 1
 3
 */
+``````
 
 **Contoh Function 5:** Inisialisasi parameter dengan nilai default
 
