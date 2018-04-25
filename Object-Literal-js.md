@@ -49,6 +49,76 @@ console.log(supermanObj.favorites[2].sports[0]); // "parkour"
 console.log(supermanObj.address); // {street: "Planet Krypton", zipCode: 54213}
 console.log(supermanObj.address.zipCode); //54213
 ```
+contoh lain :
+
+
+#### PASSWORD GENERATOR
+
+#### `[INSTRUCTIONS]`
+
+passGen adalah sebuah function yang menerima tiga parameter berupa firstName, email, dan age.
+Function akan mengambil bagian-bagian dari ketiga parameter menjadi satu kesatuan string baru,
+dengan ketentuan:
+
+output: [3 huruf pertama dari firstName][Semua huruf sebelum simbol @ di email][age]
+
+Jika firstName dibawah 3 huruf, hentikan function dan kembalikan string berupa 'NAME IS INVALID!'
+
+#### `[CONSTRAINTS]`
+Dilarang menggunakan sintaks .split(), .slice(), .splice(), .join(), .push(), dan .concat().
+Soal ini hanya membutuhkan operasi string (mengakses index dari string tentunya diperbolehkan)!
+Dilarang menggunakan segala bentuk regex (match, test, dan lain-lain)
+
+
+#### `[EXAMPLE]`
+passGen('john', 'hello@john.com', 25)
+
+proses:
+
+- 3 huruf pertama dari firstName: 'joh'
+- semua huruf sebelum simbol @ di email: 'hello'
+- age: 25
+
+output: 'johhello25'
+
+EXPLAIN YOUR LOGIC BELOW! (Required) 
+Tidak harus formal pseudocode, tapi bagaimana step by step logikanya
+Nilai tidak valid (0) jika logic dan code berbeda!
+
+
+````Javascript
+
+function passGen(firstName, email, age) {
+ var tampung = ''// penampung 3 karakter pertama pada nama + nama email yang sudah dipotong
+ var tampungEmail ='';
+ var tampungSampah = '';
+ 
+ for(i=0;i<=2;i++){// mencari 3 karakter awal nama pindahkan ke tampung
+ 	tampung+=firstName[i];
+ }
+ for(j=0;j<email.length;j++){//mencari nama awal di email
+ 	tampungEmail+'.' // tambahkan titik untuk clearing
+ 	if(email[j] === '@' ){ // menambahkan nama ke dalam tampung
+ 		tampung+=tampungEmail
+ 		tampungEmail = ''
+ 	} else if(email[j] === '.'){ // if clearing
+ 		tampungEmail = ''
+ 	} else {
+ 		tampungEmail+=email[j] // if penambahan hurup email
+ 	}
+ }
+if(firstName.length<=3){// jika nama dibawah 3 karakter
+	return 'NAME IS INVALID!'
+}
+return tampung+age // 
+}
+
+console.log(passGen('john', 'hello@gmail.com', 15)); // 'johhello15' 
+console.log(passGen('mickey', 'mike@gmail.com', 1)); // 'micmike1'
+console.log(passGen('a', 'hello@gmail.com', 15)); // 'NAME IS INVALID!'
+console.log(passGen('rudy', 'rud@rudy.co.id', 22)); // 'rudrud22'
+console.log(passGen('bejo', 'zetta@bejo.gov', 50)); // 'bejzetta50'
+````
 
 Kamu dapat mencoba kode di atas [di sini](http://jsbin.com/diruxiq/edit?js,console)
 
