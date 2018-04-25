@@ -247,3 +247,65 @@ arr2D[1].push(0);         // arr2D = [ [1,2], [3,4,0], [5,6], [7,8] ]
 arr2D[0].pop();           // arr2D = [ [1], [3,4,0], [5,6], [7,8] ]
 arr2D[2].pop();           // arr2D = [ [1], [3,4,0], [5], [7,8] ]
 ```
+## Contoh soal 1
+
+/*
+=============
+UNIQUE FINDER
+=============
+
+Name :_____________
+
+[INSTRUCTIONS]
+
+uniqueFinder adalah sebuah function yang menerima satu parameter berupa kalimat.
+Function akan mereturn array yang berisi setiap kata yang ditemukan dalam kalimat.
+Tidak boleh ada kata yang berulang, dan besar kecil dari kata tidak dianggap.
+Sehingga, Hello dan HELLO di anggap kata yang sama.
+
+Function harus mereturn string "NO WORD" jika di kalimat tersebut tidak ditemukan kata apapun.
+
+[CONSTRAINTS]
+Tidak ada batasan untuk soal ini.
+
+
+[EXAMPLE]
+uniqueFinder('saya dan SAYA suka makan nasi')
+kata unik: saya, dan, suka, makan, nasi
+output: ['saya', 'dan', 'suka', 'makan', 'nasi']
+
+*/
+
+/* EXPLAIN YOUR LOGIC BELOW! (Required) */
+// Tidak harus formal pseudocode, tapi bagaimana step by step logikanya
+// Nilai tidak valid (0) jika logic dan code berbeda!
+/*
+
+
+*/
+
+
+function uniqueFinder(sentence) {
+var kecil = sentence.toLowerCase()
+var a = kecil
+.split(' '); // membagi sentence ke dalam array untuk pengecekan
+var b = [];//penampung uniqueFinder
+var c = []; // untuk sampah
+	for(var i = 0;i<a.length;i++){ // pengulangan untuk membaca array a
+		if(b.indexOf(a[i]) === -1){ //jika kata tidak ditemukan di array penampung
+			b.push(a[i]); // push kata ke array penampung
+		}
+	}
+	if(b.length === 1){
+		return 'NO WORDS';
+	}
+	return b;
+}
+
+console.log(uniqueFinder('hello black dragon and hello red dragon')); // ['hello', 'black', 'dragon', 'and', 'red']
+console.log(uniqueFinder('hello HELLo hEllO hlloe')); // ['hello', 'hlloe']
+console.log(uniqueFinder('john is coding and he is coding')); // ['john', 'is', 'coding', 'and', 'he']
+console.log(uniqueFinder('blue blue red blue violet red violet')); // ['blue', 'red', 'violet']
+console.log(uniqueFinder('')); // 'NO WORDS'
+
+
