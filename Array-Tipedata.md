@@ -247,11 +247,11 @@ arr2D[1].push(0);         // arr2D = [ [1,2], [3,4,0], [5,6], [7,8] ]
 arr2D[0].pop();           // arr2D = [ [1], [3,4,0], [5,6], [7,8] ]
 arr2D[2].pop();           // arr2D = [ [1], [3,4,0], [5], [7,8] ]
 ```
-## Contoh soal 1
+#### `Contoh soal 1`
 
-## UNIQUE FINDER
+#### `UNIQUE FINDER`
 
-#### [INSTRUCTIONS]
+#### `[INSTRUCTIONS]`
 
 uniqueFinder adalah sebuah function yang menerima satu parameter berupa kalimat.
 Function akan mereturn array yang berisi setiap kata yang ditemukan dalam kalimat.
@@ -260,21 +260,18 @@ Sehingga, Hello dan HELLO di anggap kata yang sama.
 
 Function harus mereturn string "NO WORD" jika di kalimat tersebut tidak ditemukan kata apapun.
 
-#### [CONSTRAINTS]
+#### `[CONSTRAINTS]`
 Tidak ada batasan untuk soal ini.
 
-
-#### [EXAMPLE]
+#### `[EXAMPLE]`
 uniqueFinder('saya dan SAYA suka makan nasi')
 kata unik: saya, dan, suka, makan, nasi
 output: ['saya', 'dan', 'suka', 'makan', 'nasi']
 
-*/
+EXPLAIN YOUR LOGIC BELOW! (Required) 
+Tidak harus formal pseudocode, tapi bagaimana step by step logikanya
+Nilai tidak valid (0) jika logic dan code berbeda!
 
-/* EXPLAIN YOUR LOGIC BELOW! (Required) */
-// Tidak harus formal pseudocode, tapi bagaimana step by step logikanya
-// Nilai tidak valid (0) jika logic dan code berbeda!
-/*
 
 
 ```javascript
