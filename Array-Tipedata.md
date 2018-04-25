@@ -249,14 +249,9 @@ arr2D[2].pop();           // arr2D = [ [1], [3,4,0], [5], [7,8] ]
 ```
 ## Contoh soal 1
 
-/*
-=============
-UNIQUE FINDER
-=============
+## UNIQUE FINDER
 
-Name :_____________
-
-[INSTRUCTIONS]
+#### [INSTRUCTIONS]
 
 uniqueFinder adalah sebuah function yang menerima satu parameter berupa kalimat.
 Function akan mereturn array yang berisi setiap kata yang ditemukan dalam kalimat.
@@ -265,11 +260,11 @@ Sehingga, Hello dan HELLO di anggap kata yang sama.
 
 Function harus mereturn string "NO WORD" jika di kalimat tersebut tidak ditemukan kata apapun.
 
-[CONSTRAINTS]
+#### [CONSTRAINTS]
 Tidak ada batasan untuk soal ini.
 
 
-[EXAMPLE]
+#### [EXAMPLE]
 uniqueFinder('saya dan SAYA suka makan nasi')
 kata unik: saya, dan, suka, makan, nasi
 output: ['saya', 'dan', 'suka', 'makan', 'nasi']
@@ -282,9 +277,7 @@ output: ['saya', 'dan', 'suka', 'makan', 'nasi']
 /*
 
 
-*/
-
-
+```javascript
 function uniqueFinder(sentence) {
 var kecil = sentence.toLowerCase()
 var a = kecil
@@ -307,5 +300,5 @@ console.log(uniqueFinder('hello HELLo hEllO hlloe')); // ['hello', 'hlloe']
 console.log(uniqueFinder('john is coding and he is coding')); // ['john', 'is', 'coding', 'and', 'he']
 console.log(uniqueFinder('blue blue red blue violet red violet')); // ['blue', 'red', 'violet']
 console.log(uniqueFinder('')); // 'NO WORDS'
-
+```
 
